@@ -1,4 +1,5 @@
 
 # Instructions
-`yarn install`
-`yarn start`
+`npm install`
+`npm start`
+`Then head to http://localhost:3000/`
