@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import config from 'config/index'
-import Table from 'components/Table'
-import AddUnits from 'components/AddUnits'
-import AddTemp from 'components/AddTemperature'
-import CreateMachine from 'components/CreateMachine'
+import config from '../config/index'
+import Table from './Table'
+import AddUnits from './AddUnits'
+import AddTemp from './AddTemperature'
+import CreateMachine from './CreateMachine'
 
 class Machine extends Component {
   constructor(props) {
@@ -18,14 +18,18 @@ class Machine extends Component {
       machines: config.machines,
       units: '',
       temperature: '',
-      hasError: false
+      hasError: false,
+      error: false,
+      info: null
     };
   }
   componentDidCatch(error, info) {
-    // Display fallback UI
-    this.setState({ hasError: true });
-    // You can also log the error to an error reporting service
-    console.log(error, info);
+    // Something happened to one of my children.
+    // Add error to state
+    this.setState({
+      error: error,
+      info: info,
+    });
   }
 
   handleOpen = () => {
@@ -91,6 +95,18 @@ class Machine extends Component {
   }
 
   render() {
+    if(this.state.error) {
+      // Some error was thrown. Let's display something helpful to the user
+      return (
+        <div>
+          <h5>Sorry. Something wrong with the code</h5>
+          <details style={{ whiteSpace: 'pre-wrap' }}>
+            {this.state.info.componentStack}
+          </details>
+        </div>
+      );
+    }
+    // No errors were thrown. As you were.
     return (
       <div>
         <h1>Veemly Assignment</h1>
